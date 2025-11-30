@@ -2,13 +2,16 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { UsersFour, Envelope, Phone } from '@phosphor-icons/react'
 import { Leader } from '@/lib/types'
+import { Language, useTranslation } from '@/lib/i18n'
 
 interface LeadershipProps {
   leaders: Leader[]
+  language: Language
 }
 
-export default function Leadership({ leaders }: LeadershipProps) {
+export default function Leadership({ leaders, language }: LeadershipProps) {
   const sortedLeaders = [...leaders].sort((a, b) => a.order - b.order)
+  const t = useTranslation(language)
 
   return (
     <section id="leadership" className="py-16 md:py-24 bg-muted/30">
@@ -16,11 +19,11 @@ export default function Leadership({ leaders }: LeadershipProps) {
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-3 mb-4">
             <UsersFour size={32} className="text-primary" weight="fill" />
-            <h2 className="text-3xl md:text-4xl font-bold">Our Leadership</h2>
+            <h2 className="text-3xl md:text-4xl font-bold">{t.leadership.title}</h2>
           </div>
           <div className="w-20 h-1 bg-gradient-to-r from-primary via-accent to-secondary mx-auto mb-4"></div>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Dedicated individuals guiding our mission to preserve and promote cultural heritage
+            {t.leadership.subtitle}
           </p>
         </div>
 

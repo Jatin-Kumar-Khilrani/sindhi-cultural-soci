@@ -1,16 +1,21 @@
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { List, X, Gear } from '@phosphor-icons/react'
+import { List, X, Gear, FacebookLogo } from '@phosphor-icons/react'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import LanguageSelector from '@/components/LanguageSelector'
+import { Language, useTranslation } from '@/lib/i18n'
 
 interface HeaderProps {
   onAdminClick: () => void
+  language: Language
+  onLanguageChange: (language: Language) => void
+  facebookUrl?: string
 }
 
-export default function Header({ onAdminClick }: HeaderProps) {
+export default function Header({ onAdminClick, language, onLanguageChange, facebookUrl }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false)
-  const [isOwner, setIsOwner] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const t = useTranslation(language)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,14 +23,6 @@ export default function Header({ onAdminClick }: HeaderProps) {
     }
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  useEffect(() => {
-    window.spark.user().then(user => {
-      if (user) {
-        setIsOwner(user.isOwner)
-      }
-    })
   }, [])
 
   const scrollToSection = (id: string) => {
@@ -37,11 +34,13 @@ export default function Header({ onAdminClick }: HeaderProps) {
   }
 
   const navItems = [
-    { label: 'About', id: 'about' },
-    { label: 'Leadership', id: 'leadership' },
-    { label: 'Events', id: 'events' },
-    { label: 'Media', id: 'media' },
-    { label: 'Contact', id: 'contact' }
+    { label: t.nav.about, id: 'about' },
+    { label: t.nav.leadership, id: 'leadership' },
+    { label: t.nav.events, id: 'events' },
+    { label: t.nav.publications, id: 'publications' },
+    { label: t.nav.annualReports, id: 'annual-reports' },
+    { label: t.nav.media, id: 'media' },
+    { label: t.nav.contact, id: 'contact' }
   ]
 
   return (
@@ -65,7 +64,7 @@ export default function Header({ onAdminClick }: HeaderProps) {
             </div>
           </button>
 
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden lg:flex items-center gap-4">
             {navItems.map(item => (
               <button
                 key={item.id}
@@ -75,21 +74,29 @@ export default function Header({ onAdminClick }: HeaderProps) {
                 {item.label}
               </button>
             ))}
-            {isOwner && (
+            {facebookUrl && (
               <Button
-                variant="outline"
-                size="sm"
-                onClick={onAdminClick}
-                className="gap-2"
+                variant="ghost"
+                size="icon"
+                onClick={() => window.open(facebookUrl, '_blank')}
               >
-                <Gear weight="bold" />
-                Admin
+                <FacebookLogo weight="fill" size={20} />
               </Button>
             )}
+            <LanguageSelector currentLanguage={language} onLanguageChange={onLanguageChange} />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onAdminClick}
+              className="gap-2"
+            >
+              <Gear weight="bold" />
+              <span className="hidden xl:inline">{t.nav.admin}</span>
+            </Button>
           </nav>
 
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-            <SheetTrigger asChild className="md:hidden">
+            <SheetTrigger asChild className="lg:hidden">
               <Button variant="ghost" size="icon">
                 {mobileOpen ? <X size={24} /> : <List size={24} />}
               </Button>
@@ -105,19 +112,29 @@ export default function Header({ onAdminClick }: HeaderProps) {
                     {item.label}
                   </button>
                 ))}
-                {isOwner && (
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      setMobileOpen(false)
-                      onAdminClick()
-                    }}
-                    className="gap-2 mt-4"
-                  >
-                    <Gear weight="bold" />
-                    Admin Panel
-                  </Button>
-                )}
+                <div className="flex items-center gap-2 py-2">
+                  {facebookUrl && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => window.open(facebookUrl, '_blank')}
+                    >
+                      <FacebookLogo weight="fill" size={20} />
+                    </Button>
+                  )}
+                  <LanguageSelector currentLanguage={language} onLanguageChange={onLanguageChange} />
+                </div>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setMobileOpen(false)
+                    onAdminClick()
+                  }}
+                  className="gap-2 mt-4"
+                >
+                  <Gear weight="bold" />
+                  {t.nav.admin}
+                </Button>
               </nav>
             </SheetContent>
           </Sheet>

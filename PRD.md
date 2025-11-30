@@ -1,6 +1,6 @@
 # Planning Guide
 
-A comprehensive digital platform for Sindhi Cultural Society Jodhpur to showcase their mission of preserving Indian culture, art, and the Sindhi language while enabling administrators to manage organizational content, events, and leadership information.
+A comprehensive multilingual digital platform for Sindhi Cultural Society Jodhpur to showcase their mission of preserving Indian culture, art, and the Sindhi language while enabling administrators to manage organizational content, events, annual reports, and leadership information with secure authentication.
 
 **Experience Qualities**:
 1. **Culturally Rich** - The website should evoke pride in heritage through vibrant colors, traditional patterns, and respectful presentation of cultural content that honors the society's 40+ year legacy.
@@ -55,11 +55,32 @@ A comprehensive digital platform for Sindhi Cultural Society Jodhpur to showcase
 - **Success criteria**: Contact information is accurate, easy to copy, and includes all necessary details for various stakeholder needs
 
 ### 7. Admin Configuration Panel
-- **Functionality**: Secure interface allowing administrators to update leadership roster, add/edit events, add newspaper publications, modify content without code changes
-- **Purpose**: Enable non-technical administrators to maintain current information and scale content as the organization grows
-- **Trigger**: Accessible via admin link (owner-only access)
-- **Progression**: Admin logs in → Navigates to configuration panel → Selects section to edit (leadership/events/programs/publications) → Updates information through forms → Saves changes → Changes reflect immediately on public site
-- **Success criteria**: Interface is intuitive for non-technical users, changes persist correctly, and only authorized users can access configuration
+- **Functionality**: Secure interface with username/password authentication allowing administrators to update leadership roster, add/edit events, add newspaper publications, manage annual reports, configure site settings including social media links and donation platforms
+- **Purpose**: Enable non-technical administrators to maintain current information and scale content as the organization grows while maintaining security
+- **Trigger**: Click admin button in navigation → Enter credentials → Access configuration panel
+- **Progression**: Admin clicks admin button → Enters username and password → Successful authentication opens admin panel → Navigates between tabs (leadership/events/videos/publications/reports/settings) → Updates information through forms → Saves changes → Changes reflect immediately on public site
+- **Success criteria**: Secure login prevents unauthorized access, interface is intuitive for non-technical users, changes persist correctly, all content types are manageable
+
+### 8. Multilingual Support
+- **Functionality**: Switch between English, Hindi, and Sindhi languages for all site content with persistent language preference
+- **Purpose**: Make the website accessible to diverse audiences including English speakers, Hindi speakers, and Sindhi-speaking community members
+- **Trigger**: Language selector in header navigation
+- **Progression**: User views site in default English → Clicks language selector → Chooses Hindi or Sindhi → Entire site interface translates → Navigation, headings, buttons, and labels display in selected language → Preference persists across page sections
+- **Success criteria**: All UI elements translate properly, language selector is easily accessible, translations are culturally appropriate and accurate
+
+### 9. Social Media & Donation Integration
+- **Functionality**: Direct links to Facebook page and Benevity donation platform prominently displayed throughout the site
+- **Purpose**: Increase community engagement through social media and facilitate easy donations through trusted platforms
+- **Trigger**: Social media icons in header/footer, donation buttons in contact section
+- **Progression**: User wants to donate → Clicks "Donate Now" button in contact section → Redirected to Benevity platform → Can complete donation securely | User wants to follow on social media → Clicks Facebook icon → Opens Facebook page in new tab
+- **Success criteria**: Links are prominently displayed, open in new tabs, and correctly configured in site settings
+
+### 10. Annual Reports Section
+- **Functionality**: Dedicated section showcasing yearly reports with descriptions and downloadable files
+- **Purpose**: Provide transparency about organizational activities and achievements to stakeholders, donors, and community members
+- **Trigger**: Visible from navigation and dedicated section on homepage
+- **Progression**: User navigates to Annual Reports section → Views chronologically ordered reports by year → Reads report descriptions → Clicks download button → Accesses full report document
+- **Success criteria**: Reports are organized by year (newest first), include clear descriptions, support file downloads, and are easily manageable through admin panel
 
 ## Edge Case Handling
 - **No Events Scheduled**: Display encouraging message about checking back soon with prominent contact information for inquiries

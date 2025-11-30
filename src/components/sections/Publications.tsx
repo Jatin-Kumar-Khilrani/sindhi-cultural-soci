@@ -2,12 +2,15 @@ import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ArrowSquareOut, Newspaper } from '@phosphor-icons/react'
 import { NewspaperPublication } from '@/lib/types'
+import { Language, useTranslation } from '@/lib/i18n'
 
 interface PublicationsProps {
   publications: NewspaperPublication[]
+  language: Language
 }
 
-export default function Publications({ publications }: PublicationsProps) {
+export default function Publications({ publications, language }: PublicationsProps) {
+  const t = useTranslation(language)
   const sortedPublications = [...publications].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   )
@@ -18,10 +21,10 @@ export default function Publications({ publications }: PublicationsProps) {
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-3 mb-4">
             <Newspaper size={32} className="text-primary" weight="duotone" />
-            <h2 className="text-4xl font-bold">Press & Publications</h2>
+            <h2 className="text-4xl font-bold">{t.publications.title}</h2>
           </div>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Our work has been featured in various newspapers and media outlets
+            {t.publications.subtitle}
           </p>
         </div>
 
@@ -52,7 +55,7 @@ export default function Publications({ publications }: PublicationsProps) {
                         {publication.publicationName}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        {new Date(publication.date).toLocaleDateString('en-IN', {
+                        {t.publications.publishedOn} {new Date(publication.date).toLocaleDateString('en-IN', {
                           day: 'numeric',
                           month: 'long',
                           year: 'numeric'
@@ -85,7 +88,7 @@ export default function Publications({ publications }: PublicationsProps) {
                         className="flex items-center justify-center gap-2"
                       >
                         <ArrowSquareOut />
-                        Read Full Article
+                        {t.publications.readMore}
                       </a>
                     </Button>
                   )}

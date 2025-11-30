@@ -1,11 +1,15 @@
 import { Button } from '@/components/ui/button'
 import { ArrowDown } from '@phosphor-icons/react'
+import { Language, useTranslation } from '@/lib/i18n'
 
 interface HeroProps {
   mission: string
+  language: Language
 }
 
-export default function Hero({ mission }: HeroProps) {
+export default function Hero({ mission, language }: HeroProps) {
+  const t = useTranslation(language)
+  
   const scrollToContact = () => {
     const element = document.getElementById('contact')
     if (element) {
@@ -38,7 +42,7 @@ export default function Hero({ mission }: HeroProps) {
         </h1>
         
         <p className="text-lg md:text-xl text-muted-foreground mb-4 max-w-3xl mx-auto">
-          Jodhpur, Rajasthan
+          {t.hero.subtitle}
         </p>
         
         <div className="w-24 h-1 bg-gradient-to-r from-primary via-accent to-secondary mx-auto mb-8"></div>
@@ -49,7 +53,7 @@ export default function Hero({ mission }: HeroProps) {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Button size="lg" onClick={scrollToContact} className="gap-2 min-w-[160px]">
-            Get Involved
+            {t.contact.contactUs}
           </Button>
           <Button
             size="lg"
@@ -57,7 +61,7 @@ export default function Hero({ mission }: HeroProps) {
             onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
             className="gap-2 min-w-[160px]"
           >
-            Learn More
+            {t.nav.about}
           </Button>
         </div>
 

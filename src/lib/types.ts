@@ -49,3 +49,18 @@ export interface NewspaperPublication {
   imageUrl?: string
   externalLink?: string
 }
+
+export interface AnnualReport {
+  id: string
+  year: string
+  title: string
+  description: string
+  fileUrl?: string
+}
+
+export interface SiteSettings {
+  adminUsername: string
+  adminPassword: string
+  facebookUrl?: string
+  benevityUrl?: string
+}

@@ -5,13 +5,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Calendar, MapPin, Ticket } from '@phosphor-icons/react'
 import { Event } from '@/lib/types'
 import { format } from 'date-fns'
+import { Language, useTranslation } from '@/lib/i18n'
 
 interface EventsProps {
   events: Event[]
+  language: Language
 }
 
-export default function Events({ events }: EventsProps) {
+export default function Events({ events, language }: EventsProps) {
   const [filter, setFilter] = useState<'all' | 'upcoming' | 'past'>('all')
+  const t = useTranslation(language)
 
   const upcomingEvents = events.filter(e => e.status === 'upcoming').sort((a, b) => 
     new Date(a.date).getTime() - new Date(b.date).getTime()
@@ -48,19 +51,19 @@ export default function Events({ events }: EventsProps) {
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-3 mb-4">
             <Calendar size={32} className="text-primary" weight="fill" />
-            <h2 className="text-3xl md:text-4xl font-bold">Events & Programs</h2>
+            <h2 className="text-3xl md:text-4xl font-bold">{t.events.title}</h2>
           </div>
           <div className="w-20 h-1 bg-gradient-to-r from-primary via-accent to-secondary mx-auto mb-4"></div>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Join us in celebrating and preserving our rich cultural heritage through various programs
+            {t.events.subtitle}
           </p>
         </div>
 
         <Tabs value={filter} onValueChange={(v) => setFilter(v as typeof filter)} className="mb-8">
           <TabsList className="grid w-full max-w-md mx-auto grid-cols-3">
-            <TabsTrigger value="all">All Events</TabsTrigger>
-            <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
-            <TabsTrigger value="past">Past</TabsTrigger>
+            <TabsTrigger value="all">{t.events.all}</TabsTrigger>
+            <TabsTrigger value="upcoming">{t.events.upcoming}</TabsTrigger>
+            <TabsTrigger value="past">{t.events.past}</TabsTrigger>
           </TabsList>
 
           <TabsContent value={filter} className="mt-8">
@@ -86,7 +89,7 @@ export default function Events({ events }: EventsProps) {
                           {getTypeLabel(event.type)}
                         </Badge>
                         <Badge variant={event.status === 'upcoming' ? 'default' : 'secondary'}>
-                          {event.status === 'upcoming' ? 'Upcoming' : 'Completed'}
+                          {event.status === 'upcoming' ? t.events.upcoming : t.events.past}
                         </Badge>
                       </div>
 

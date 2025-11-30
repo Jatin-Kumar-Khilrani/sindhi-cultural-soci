@@ -1,12 +1,17 @@
 import { Separator } from '@/components/ui/separator'
-import { YoutubeLogo, Envelope, Phone } from '@phosphor-icons/react'
+import { YoutubeLogo, Envelope, Phone, FacebookLogo } from '@phosphor-icons/react'
 import { OrganizationInfo } from '@/lib/types'
+import { Language, useTranslation } from '@/lib/i18n'
 
 interface FooterProps {
   orgInfo: OrganizationInfo
+  language: Language
+  facebookUrl?: string
 }
 
-export default function Footer({ orgInfo }: FooterProps) {
+export default function Footer({ orgInfo, language, facebookUrl }: FooterProps) {
+  const t = useTranslation(language)
+  
   return (
     <footer className="bg-secondary text-secondary-foreground">
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-12">
@@ -27,14 +32,14 @@ export default function Footer({ orgInfo }: FooterProps) {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Quick Links</h4>
+            <h4 className="font-semibold mb-4">{t.footer.quickLinks}</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <button
                   onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
                   className="opacity-80 hover:opacity-100 transition-opacity"
                 >
-                  About Us
+                  {t.nav.about}
                 </button>
               </li>
               <li>
@@ -42,7 +47,7 @@ export default function Footer({ orgInfo }: FooterProps) {
                   onClick={() => document.getElementById('leadership')?.scrollIntoView({ behavior: 'smooth' })}
                   className="opacity-80 hover:opacity-100 transition-opacity"
                 >
-                  Leadership
+                  {t.nav.leadership}
                 </button>
               </li>
               <li>
@@ -50,7 +55,7 @@ export default function Footer({ orgInfo }: FooterProps) {
                   onClick={() => document.getElementById('events')?.scrollIntoView({ behavior: 'smooth' })}
                   className="opacity-80 hover:opacity-100 transition-opacity"
                 >
-                  Events
+                  {t.nav.events}
                 </button>
               </li>
               <li>
@@ -58,7 +63,7 @@ export default function Footer({ orgInfo }: FooterProps) {
                   onClick={() => document.getElementById('media')?.scrollIntoView({ behavior: 'smooth' })}
                   className="opacity-80 hover:opacity-100 transition-opacity"
                 >
-                  Media Gallery
+                  {t.nav.media}
                 </button>
               </li>
               <li>
@@ -66,14 +71,14 @@ export default function Footer({ orgInfo }: FooterProps) {
                   onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
                   className="opacity-80 hover:opacity-100 transition-opacity"
                 >
-                  Contact
+                  {t.nav.contact}
                 </button>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold mb-4">Contact Us</h4>
+            <h4 className="font-semibold mb-4">{t.contact.title}</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex items-center gap-2">
                 <Phone size={16} weight="bold" />
@@ -87,14 +92,23 @@ export default function Footer({ orgInfo }: FooterProps) {
                   {orgInfo.email}
                 </a>
               </li>
-              <li className="flex items-start gap-2 mt-4">
+              <li className="flex items-start gap-3 mt-4">
                 <button
                   onClick={() => window.open(orgInfo.youtubeChannel, '_blank')}
                   className="flex items-center gap-2 opacity-80 hover:opacity-100 transition-opacity"
                 >
                   <YoutubeLogo size={20} weight="fill" />
-                  YouTube Channel
+                  YouTube
                 </button>
+                {facebookUrl && (
+                  <button
+                    onClick={() => window.open(facebookUrl, '_blank')}
+                    className="flex items-center gap-2 opacity-80 hover:opacity-100 transition-opacity"
+                  >
+                    <FacebookLogo size={20} weight="fill" />
+                    Facebook
+                  </button>
+                )}
               </li>
             </ul>
           </div>
@@ -104,7 +118,7 @@ export default function Footer({ orgInfo }: FooterProps) {
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm opacity-80">
           <p>
-            © {new Date().getFullYear()} {orgInfo.name}. All rights reserved.
+            © {new Date().getFullYear()} {orgInfo.name}. {t.footer.copyright}
           </p>
           <p>
             Registered under Societies Registration Act, {orgInfo.registeredYear}

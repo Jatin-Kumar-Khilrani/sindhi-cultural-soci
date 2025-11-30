@@ -1,17 +1,21 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { CheckCircle, Seal } from '@phosphor-icons/react'
 import { OrganizationInfo } from '@/lib/types'
+import { Language, useTranslation } from '@/lib/i18n'
 
 interface AboutProps {
   orgInfo: OrganizationInfo
+  language: Language
 }
 
-export default function About({ orgInfo }: AboutProps) {
+export default function About({ orgInfo, language }: AboutProps) {
+  const t = useTranslation(language)
+  
   return (
     <section id="about" className="py-16 md:py-24 bg-card">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">About Us</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">{t.about.title}</h2>
           <div className="w-20 h-1 bg-gradient-to-r from-primary via-accent to-secondary mx-auto"></div>
         </div>
 
@@ -23,9 +27,9 @@ export default function About({ orgInfo }: AboutProps) {
                   <Seal size={24} className="text-primary" weight="fill" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2">Our Heritage</h3>
+                  <h3 className="text-xl font-semibold mb-2">{t.about.title}</h3>
                   <p className="text-muted-foreground">
-                    Founded in {orgInfo.foundedYear}, registered in {orgInfo.registeredYear}
+                    {t.about.founded} {orgInfo.foundedYear}, {t.about.registered} {orgInfo.registeredYear}
                   </p>
                 </div>
               </div>
@@ -42,7 +46,7 @@ export default function About({ orgInfo }: AboutProps) {
                   <CheckCircle size={24} className="text-secondary" weight="fill" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2">Our Mission</h3>
+                  <h3 className="text-xl font-semibold mb-2">{t.about.missionTitle}</h3>
                   <p className="text-muted-foreground">Preserving culture since 1982</p>
                 </div>
               </div>
@@ -55,7 +59,7 @@ export default function About({ orgInfo }: AboutProps) {
 
         <Card className="border-2 border-accent/30 bg-accent/5">
           <CardContent className="p-6 md:p-8">
-            <h3 className="text-2xl font-semibold mb-6 text-center">Prestigious Affiliations</h3>
+            <h3 className="text-2xl font-semibold mb-6 text-center">{t.about.affiliationsTitle}</h3>
             <div className="grid sm:grid-cols-2 gap-4">
               {orgInfo.affiliations.map((affiliation, index) => (
                 <div key={index} className="flex items-start gap-3">
