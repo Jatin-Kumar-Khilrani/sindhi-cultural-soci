@@ -1,6 +1,6 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Phone, Envelope, MapPin, IdentificationCard } from '@phosphor-icons/react'
+import { Phone, Envelope, MapPin, IdentificationCard, Bank } from '@phosphor-icons/react'
 import { OrganizationInfo } from '@/lib/types'
 import { Language, useTranslation } from '@/lib/i18n'
 
@@ -106,6 +106,28 @@ export default function Contact({ orgInfo, language, benevityUrl }: ContactProps
               <p className="text-muted-foreground mb-6 leading-relaxed">
                 {t.contact.supportText}
               </p>
+              
+              <div className="bg-card/80 rounded-lg p-6 mb-6 border-2 border-primary/10">
+                <div className="flex items-center justify-center gap-3 mb-4">
+                  <Bank size={28} className="text-primary" weight="bold" />
+                  <h4 className="text-lg font-semibold">{t.contact.bankDetails}</h4>
+                </div>
+                <div className="space-y-3 text-left max-w-md mx-auto">
+                  <div className="flex justify-between items-center border-b border-border/50 pb-2">
+                    <span className="text-sm text-muted-foreground">{t.contact.accountHolder}:</span>
+                    <span className="font-semibold text-sm">Sindhi Cultural Society Jodhpur</span>
+                  </div>
+                  <div className="flex justify-between items-center border-b border-border/50 pb-2">
+                    <span className="text-sm text-muted-foreground">{t.contact.accountNumber}:</span>
+                    <span className="font-mono font-semibold text-sm">0136010002280</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm text-muted-foreground">{t.contact.ifscCode}:</span>
+                    <span className="font-mono font-semibold text-sm">BARB0JODHPU</span>
+                  </div>
+                </div>
+              </div>
+              
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 {benevityUrl && (
                   <Button size="lg" onClick={() => window.open(benevityUrl, '_blank')}>

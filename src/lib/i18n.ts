@@ -58,6 +58,10 @@ export interface Translations {
     contactUs: string
     callNow: string
     donate: string
+    bankDetails: string
+    accountNumber: string
+    ifscCode: string
+    accountHolder: string
   }
   footer: {
     quickLinks: string
@@ -130,7 +134,11 @@ export const translations: Record<Language, Translations> = {
       supportText: 'Your contributions help us preserve cultural heritage, train youth in traditional arts, and organize meaningful cultural programs that enrich our community.',
       contactUs: 'Contact Us',
       callNow: 'Call Now',
-      donate: 'Donate Now'
+      donate: 'Donate Now',
+      bankDetails: 'Bank Account Details',
+      accountNumber: 'Account Number',
+      ifscCode: 'IFSC Code',
+      accountHolder: 'Account Holder'
     },
     footer: {
       quickLinks: 'Quick Links',
@@ -201,7 +209,11 @@ export const translations: Record<Language, Translations> = {
       supportText: 'आपका योगदान हमें सांस्कृतिक विरासत को संरक्षित करने, पारंपरिक कलाओं में युवाओं को प्रशिक्षित करने और हमारे समुदाय को समृद्ध करने वाले सार्थक सांस्कृतिक कार्यक्रम आयोजित करने में मदद करता है।',
       contactUs: 'हमसे संपर्क करें',
       callNow: 'अभी कॉल करें',
-      donate: 'अभी दान करें'
+      donate: 'अभी दान करें',
+      bankDetails: 'बैंक खाता विवरण',
+      accountNumber: 'खाता संख्या',
+      ifscCode: 'आईएफएससी कोड',
+      accountHolder: 'खाता धारक'
     },
     footer: {
       quickLinks: 'त्वरित लिंक',
@@ -272,7 +284,11 @@ export const translations: Record<Language, Translations> = {
       supportText: 'توهان جو تعاون اسان کي ثقافتي ورثي کي محفوظ ڪرڻ، روايتي فنون ۾ نوجوانن کي تربيت ڏيڻ، ۽ اسان جي ڪميونٽي کي بھرپور ڪندڙ معنيٰ خيز ثقافتي پروگرام منظم ڪرڻ ۾ مدد ڪري ٿو.',
       contactUs: 'اسان سان رابطو ڪريو',
       callNow: 'ھاڻي ڪال ڪريو',
-      donate: 'ھاڻي عطيو ڏيو'
+      donate: 'ھاڻي عطيو ڏيو',
+      bankDetails: 'بينڪ اڪائونٽ تفصيل',
+      accountNumber: 'اڪائونٽ نمبر',
+      ifscCode: 'آءِ ايف ايس سي ڪوڊ',
+      accountHolder: 'اڪائونٽ هولڊر'
     },
     footer: {
       quickLinks: 'تيز لنڪس',
