@@ -40,25 +40,34 @@ A comprehensive digital platform for Sindhi Cultural Society Jodhpur to showcase
 - **Progression**: Visitor navigates to media section → Views curated YouTube playlist/videos → Clicks to watch performances → Can share videos or visit YouTube channel
 - **Success criteria**: Videos load efficiently, gallery is organized by program type or date, and channel link is prominent
 
-### 5. Contact & Donation Information
+### 5. Newspaper Publications Archive
+- **Functionality**: Display newspaper articles and press coverage featuring the society's work and achievements
+- **Purpose**: Establish credibility through third-party validation and showcase media recognition
+- **Trigger**: Accessible from main navigation and featured on homepage
+- **Progression**: Visitor clicks "Press & Publications" → Views grid of newspaper clippings with publication names and dates → Clicks on article for larger view or external link → Can see chronological history of media coverage
+- **Success criteria**: Publications are organized by date, display clearly with newspaper name, date, and thumbnail, support external links to online articles, and are easily manageable through admin configuration
+
+### 6. Contact & Donation Information
 - **Functionality**: Clear display of contact details, physical address, email, phone, and PAN number for donations
 - **Purpose**: Enable supporters to reach out for inquiries, registrations, or donations while providing transparency required for non-profit status
 - **Trigger**: Accessible from navigation, footer, and prominent call-to-action buttons
 - **Progression**: Visitor wants to connect → Clicks contact → Sees multiple contact methods (phone, email, address) → Views PAN for donation purposes → Can directly initiate contact
 - **Success criteria**: Contact information is accurate, easy to copy, and includes all necessary details for various stakeholder needs
 
-### 6. Admin Configuration Panel
-- **Functionality**: Secure interface allowing administrators to update leadership roster, add/edit events, modify content without code changes
+### 7. Admin Configuration Panel
+- **Functionality**: Secure interface allowing administrators to update leadership roster, add/edit events, add newspaper publications, modify content without code changes
 - **Purpose**: Enable non-technical administrators to maintain current information and scale content as the organization grows
 - **Trigger**: Accessible via admin link (owner-only access)
-- **Progression**: Admin logs in → Navigates to configuration panel → Selects section to edit (leadership/events/programs) → Updates information through forms → Saves changes → Changes reflect immediately on public site
+- **Progression**: Admin logs in → Navigates to configuration panel → Selects section to edit (leadership/events/programs/publications) → Updates information through forms → Saves changes → Changes reflect immediately on public site
 - **Success criteria**: Interface is intuitive for non-technical users, changes persist correctly, and only authorized users can access configuration
 
 ## Edge Case Handling
 - **No Events Scheduled**: Display encouraging message about checking back soon with prominent contact information for inquiries
+- **No Publications Available**: Display placeholder message encouraging visitors to check back as media coverage is added
 - **Missing Leadership Photos**: Show placeholder with name and title to maintain professional appearance
 - **YouTube API Issues**: Gracefully degrade to direct channel links if embedding fails
 - **Long Event Descriptions**: Implement "Read More" expansion to maintain clean layout
+- **Large Publication Images**: Optimize display with aspect ratio controls and lazy loading
 - **Mobile Navigation**: Collapsible menu for easy access to all sections on small screens
 - **Empty Configuration**: Provide sensible defaults and sample data to demonstrate functionality
 
@@ -114,10 +123,11 @@ Animations should be subtle and purposeful, enhancing the sense of cultural rich
   - Hero: Card component with background image and overlay for mission statement
   - Leadership Grid: Card components in responsive grid layout with Avatar components for photos
   - Events: Card components with Badge for event type, Calendar integration visual, Tabs for filtering (Upcoming/Past/All)
+  - Publications: Card components in responsive grid with publication images, newspaper names, dates, and external link buttons
   - About Section: Accordion or standard card layout for affiliations and history
   - Media Gallery: Aspect-ratio components for YouTube embeds, organized in responsive grid
   - Contact: Card with separate sections for phone, email, address using Separator components
-  - Admin Panel: Dialog component for configuration modal, Form components with Input, Textarea, and Button elements, Switch for status toggles
+  - Admin Panel: Dialog component for configuration modal, Tabs for different sections (Leadership/Events/Videos/Publications), Form components with Input, Textarea, and Button elements, Switch for status toggles
   - Call-to-Actions: Button variants (primary for donate, secondary for contact)
   - Toast notifications (sonner) for admin save confirmations
 
@@ -137,12 +147,14 @@ Animations should be subtle and purposeful, enhancing the sense of cultural rich
   - Users/UsersFour: Leadership section
   - Calendar/CalendarBlank: Events and dates
   - Play/PlayCircle: Video gallery and performances
+  - Newspaper: Publications and press coverage
   - Phone/Envelope/MapPin: Contact information
   - TreeEvergreen: Environmental programs
   - Student: Youth programs and workshops
   - MusicNotes/Masks: Cultural programs and theater
   - Gear: Admin configuration
   - Plus/PencilSimple/Trash: Admin actions
+  - ArrowSquareOut: External links to articles
 
 - **Spacing**:
   - Section padding: py-16 md:py-24 (vertical breathing room between major sections)
@@ -157,6 +169,7 @@ Animations should be subtle and purposeful, enhancing the sense of cultural rich
   - Hero: Stack elements vertically, reduce heading sizes (text-3xl → text-4xl at md)
   - Leadership Grid: 1 column mobile, 2 columns tablet (md), 4 columns desktop (lg)
   - Events: 1 column mobile, 2 columns tablet, 3 columns desktop
+  - Publications: 1 column mobile, 2 columns tablet, 3 columns desktop with optimized image display
   - Typography: Responsive scale (base 14px mobile, 16px desktop)
   - Touch targets: Minimum 44px for all interactive elements
   - Forms in admin: Stack labels above inputs on mobile, side-by-side on desktop where appropriate

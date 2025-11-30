@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react'
 import { useKV } from '@github/spark/hooks'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Leader, Event, YouTubeVideo } from '@/lib/types'
+import { Leader, Event, YouTubeVideo, NewspaperPublication } from '@/lib/types'
 import LeadershipManager from './LeadershipManager'
 import EventsManager from './EventsManager'
 import VideosManager from './VideosManager'
+import PublicationsManager from './PublicationsManager'
 
 interface AdminPanelProps {
   open: boolean
@@ -17,6 +18,7 @@ export default function AdminPanel({ open, onOpenChange }: AdminPanelProps) {
   const [leaders] = useKV<Leader[]>('leaders', [])
   const [events] = useKV<Event[]>('events', [])
   const [videos] = useKV<YouTubeVideo[]>('videos', [])
+  const [publications] = useKV<NewspaperPublication[]>('publications', [])
 
   useEffect(() => {
     window.spark.user().then(user => {
@@ -38,10 +40,11 @@ export default function AdminPanel({ open, onOpenChange }: AdminPanelProps) {
         </DialogHeader>
 
         <Tabs defaultValue="leadership" className="mt-4">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="leadership">Leadership</TabsTrigger>
             <TabsTrigger value="events">Events</TabsTrigger>
             <TabsTrigger value="videos">Videos</TabsTrigger>
+            <TabsTrigger value="publications">Publications</TabsTrigger>
           </TabsList>
 
           <TabsContent value="leadership" className="mt-6">
@@ -54,6 +57,10 @@ export default function AdminPanel({ open, onOpenChange }: AdminPanelProps) {
 
           <TabsContent value="videos" className="mt-6">
             <VideosManager />
+          </TabsContent>
+
+          <TabsContent value="publications" className="mt-6">
+            <PublicationsManager />
           </TabsContent>
         </Tabs>
       </DialogContent>

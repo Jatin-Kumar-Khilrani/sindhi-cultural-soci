@@ -39,3 +39,13 @@ export interface YouTubeVideo {
   videoId: string
   thumbnail?: string
 }
+
+export interface NewspaperPublication {
+  id: string
+  title: string
+  description: string
+  publicationName: string
+  date: string
+  imageUrl?: string
+  externalLink?: string
+}

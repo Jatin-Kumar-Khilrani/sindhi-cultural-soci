@@ -7,16 +7,18 @@ import About from '@/components/sections/About'
 import Leadership from '@/components/sections/Leadership'
 import Events from '@/components/sections/Events'
 import MediaGallery from '@/components/sections/MediaGallery'
+import Publications from '@/components/sections/Publications'
 import Contact from '@/components/sections/Contact'
 import Footer from '@/components/sections/Footer'
 import AdminPanel from '@/components/admin/AdminPanel'
-import { Leader, Event, YouTubeVideo, OrganizationInfo } from '@/lib/types'
+import { Leader, Event, YouTubeVideo, OrganizationInfo, NewspaperPublication } from '@/lib/types'
 
 function App() {
   const [showAdmin, setShowAdmin] = useState(false)
   const [leaders] = useKV<Leader[]>('leaders', [])
   const [events] = useKV<Event[]>('events', [])
   const [videos] = useKV<YouTubeVideo[]>('videos', [])
+  const [publications] = useKV<NewspaperPublication[]>('publications', [])
   const [orgInfo] = useKV<OrganizationInfo>('organizationInfo', {
     name: 'Sindhi Cultural Society',
     foundedYear: 1982,
@@ -44,6 +46,7 @@ function App() {
         <About orgInfo={orgInfo!} />
         <Leadership leaders={leaders || []} />
         <Events events={events || []} />
+        <Publications publications={publications || []} />
         <MediaGallery videos={videos || []} youtubeChannel={orgInfo?.youtubeChannel || ''} />
         <Contact orgInfo={orgInfo!} />
       </main>
