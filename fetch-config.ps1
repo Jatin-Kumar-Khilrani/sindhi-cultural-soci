@@ -23,6 +23,11 @@ try {
     $cosmosDatabase = az keyvault secret show --vault-name $vaultName --name cosmos-database --query value -o tsv
     $cosmosContainer = az keyvault secret show --vault-name $vaultName --name cosmos-container --query value -o tsv
     
+    # Fetch storage secrets
+    $storageAccount = az keyvault secret show --vault-name $vaultName --name storageAccount --query value -o tsv 2>$null
+    $storageKey = az keyvault secret show --vault-name $vaultName --name storageKey --query value -o tsv 2>$null
+    $storageContainer = az keyvault secret show --vault-name $vaultName --name storageContainer --query value -o tsv 2>$null
+    
     if (-not $cosmosEndpoint -or -not $cosmosKey) {
         Write-Host "Failed to fetch secrets from Key Vault" -ForegroundColor Red
         exit 1
@@ -34,6 +39,9 @@ try {
         cosmosKey = $cosmosKey
         cosmosDatabase = $cosmosDatabase
         cosmosContainer = $cosmosContainer
+        storageAccount = $storageAccount
+        storageKey = $storageKey
+        storageContainer = $storageContainer
     }
     
     $configJson = $config | ConvertTo-Json -Depth 10

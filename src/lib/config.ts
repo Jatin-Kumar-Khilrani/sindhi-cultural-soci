@@ -7,6 +7,10 @@ interface RuntimeConfig {
   cosmosKey: string;
   cosmosDatabase: string;
   cosmosContainer: string;
+  // Azure Blob Storage for image uploads
+  storageAccount: string;
+  storageKey: string;
+  storageContainer: string;
 }
 
 let cachedConfig: RuntimeConfig | null = null;
@@ -25,7 +29,10 @@ function getBuildTimeConfig(): RuntimeConfig {
     cosmosEndpoint: import.meta.env.VITE_COSMOS_ENDPOINT || '',
     cosmosKey: import.meta.env.VITE_COSMOS_KEY || '',
     cosmosDatabase: import.meta.env.VITE_COSMOS_DATABASE || 'sindhi-db',
-    cosmosContainer: import.meta.env.VITE_COSMOS_CONTAINER || 'kv-store'
+    cosmosContainer: import.meta.env.VITE_COSMOS_CONTAINER || 'kv-store',
+    storageAccount: import.meta.env.VITE_STORAGE_ACCOUNT || '',
+    storageKey: import.meta.env.VITE_STORAGE_KEY || '',
+    storageContainer: import.meta.env.VITE_STORAGE_CONTAINER || 'images'
   };
 }
 
@@ -41,7 +48,10 @@ async function fetchRuntimeConfig(): Promise<RuntimeConfig | null> {
         cosmosEndpoint: config.cosmosEndpoint || '',
         cosmosKey: config.cosmosKey || '',
         cosmosDatabase: config.cosmosDatabase || 'sindhi-db',
-        cosmosContainer: config.cosmosContainer || 'kv-store'
+        cosmosContainer: config.cosmosContainer || 'kv-store',
+        storageAccount: config.storageAccount || '',
+        storageKey: config.storageKey || '',
+        storageContainer: config.storageContainer || 'images'
       };
     }
   } catch {

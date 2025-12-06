@@ -80,11 +80,18 @@ async function generateAuthToken(
 
 /**
  * Make a request to Cosmos DB REST API
+ * @param method HTTP method
+ * @param resourceType Type of resource (docs, colls, dbs)
+ * @param resourceLink Resource link for signing (e.g., dbs/{db}/colls/{coll} for docs operations)
+ * @param urlPath Optional different URL path (if different from resourceLink)
+ * @param additionalHeaders Additional headers to include
+ * @param body Request body
  */
 async function cosmosRequest(
   method: string,
   resourceType: string,
   resourceLink: string,
+  urlPath?: string,
   additionalHeaders?: Record<string, string>,
   body?: unknown
 ): Promise<Response> {
@@ -107,8 +114,7 @@ async function cosmosRequest(
   const ss = String(now.getUTCSeconds()).padStart(2, '0');
   const date = `${day}, ${dd} ${mon} ${yyyy} ${hh}:${mm}:${ss} GMT`;
   
-  // Generate auth token - resourceLink should NOT be lowercased for documents
-  // Only verb and resourceType are lowercased, resourceLink keeps original case
+  // Generate auth token - resourceLink is used for signing
   const authToken = await generateAuthToken(
     method, 
     resourceType, 
@@ -117,9 +123,9 @@ async function cosmosRequest(
     config.key
   );
   
-  // URL includes the resource path - remove trailing slash from endpoint if present
+  // URL may be different from resourceLink (e.g., for POST to create docs)
   const baseUrl = config.endpoint.replace(/\/$/, '');
-  const url = `${baseUrl}/${resourceLink}`;
+  const url = `${baseUrl}/${urlPath || resourceLink}`;
   
   const headers: HeadersInit = {
     'Authorization': authToken,
@@ -150,6 +156,7 @@ export async function getValue<T>(key: string): Promise<T | null> {
       'GET', 
       'docs', 
       resourceLink,
+      undefined, // urlPath same as resourceLink
       { 'x-ms-documentdb-partitionkey': '["kv"]' }
     );
     
@@ -177,8 +184,10 @@ export async function setValue<T>(key: string, value: T): Promise<boolean> {
   
   try {
     // For creating documents:
-    // resourceLink = "dbs/{db}/colls/{coll}" (the collection, not the document)
+    // resourceLink for signing = "dbs/{db}/colls/{coll}" (the collection)
+    // urlPath for request = "dbs/{db}/colls/{coll}/docs" (with /docs suffix)
     const resourceLink = `dbs/${config.databaseId}/colls/${config.containerId}`;
+    const urlPath = `${resourceLink}/docs`;
     
     const document: KVDocument = {
       id: key,
@@ -191,6 +200,7 @@ export async function setValue<T>(key: string, value: T): Promise<boolean> {
       'POST',
       'docs',
       resourceLink,
+      urlPath,
       { 
         'x-ms-documentdb-partitionkey': '["kv"]',
         'x-ms-documentdb-is-upsert': 'true'
@@ -223,6 +233,7 @@ export async function deleteValue(key: string): Promise<boolean> {
       'DELETE', 
       'docs', 
       resourceLink,
+      undefined, // urlPath same as resourceLink
       { 'x-ms-documentdb-partitionkey': '["kv"]' }
     );
     
@@ -239,8 +250,10 @@ export async function getAllKeys(): Promise<string[]> {
   
   try {
     // For querying documents:
-    // resourceLink = "dbs/{db}/colls/{coll}" (the collection)
+    // resourceLink for signing = "dbs/{db}/colls/{coll}" (the collection)
+    // urlPath for request = "dbs/{db}/colls/{coll}/docs" (with /docs suffix)
     const resourceLink = `dbs/${config.databaseId}/colls/${config.containerId}`;
+    const urlPath = `${resourceLink}/docs`;
     
     // Use SQL query to get all document IDs
     const query = {
@@ -252,6 +265,7 @@ export async function getAllKeys(): Promise<string[]> {
       'POST',
       'docs',
       resourceLink,
+      urlPath,
       { 
         'x-ms-documentdb-partitionkey': '["kv"]',
         'x-ms-documentdb-isquery': 'true',

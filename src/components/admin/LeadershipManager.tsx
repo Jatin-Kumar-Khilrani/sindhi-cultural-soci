@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Plus, Trash, PencilSimple } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { Leader } from '@/lib/types'
+import ImageUpload from './ImageUpload'
 
 export default function LeadershipManager() {
   const [leaders, setLeaders] = useKV<Leader[]>('leaders', [])
@@ -128,29 +129,12 @@ export default function LeadershipManager() {
                 />
               </div>
               <div>
-                <Label htmlFor="photo">Photo URL</Label>
-                <Input
-                  id="photo"
+                <ImageUpload
                   value={formData.photo}
-                  onChange={(e) => setFormData(prev => ({ ...prev, photo: e.target.value }))}
-                  placeholder="https://... (image URL)"
+                  onChange={(url) => setFormData(prev => ({ ...prev, photo: url }))}
+                  folder="leaders"
+                  label="Photo"
                 />
-                <p className="text-xs text-muted-foreground mt-1">
-                  Upload your image to a service like Imgur, ImgBB, or use a direct URL
-                </p>
-                {formData.photo && (
-                  <div className="mt-2 p-4 bg-muted rounded-lg">
-                    <p className="text-xs text-muted-foreground mb-2">Preview:</p>
-                    <img 
-                      src={formData.photo} 
-                      alt="Photo preview" 
-                      className="w-20 h-20 rounded-full object-cover"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none'
-                      }}
-                    />
-                  </div>
-                )}
               </div>
               <div>
                 <Label htmlFor="order">Display Order</Label>
