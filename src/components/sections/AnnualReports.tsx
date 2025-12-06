@@ -1,8 +1,16 @@
+import { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Download, Calendar } from '@phosphor-icons/react'
 import { AnnualReport } from '@/lib/types'
 import { Language, useTranslation } from '@/lib/i18n'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 
 interface AnnualReportsProps {
   reports: AnnualReport[]
@@ -11,6 +19,7 @@ interface AnnualReportsProps {
 
 export default function AnnualReports({ reports, language }: AnnualReportsProps) {
   const t = useTranslation(language)
+  const [selectedReport, setSelectedReport] = useState<AnnualReport | null>(null)
   
   if (!reports || reports.length === 0) {
     return null
@@ -48,21 +57,61 @@ export default function AnnualReports({ reports, language }: AnnualReportsProps)
                   {report.description}
                 </p>
                 
-                {report.fileUrl && (
-                  <Button
-                    onClick={() => window.open(report.fileUrl, '_blank')}
-                    className="w-full gap-2"
-                    variant="outline"
-                  >
-                    <Download weight="bold" />
-                    {t.annualReports.downloadReport}
-                  </Button>
-                )}
+                <div className="flex flex-col gap-2">
+                  {report.description && report.description.length > 150 && (
+                    <Button
+                      onClick={() => setSelectedReport(report)}
+                      variant="ghost"
+                      size="sm"
+                      className="w-full"
+                    >
+                      {t.annualReports.readMore || 'Read More'}
+                    </Button>
+                  )}
+                  {report.fileUrl && (
+                    <Button
+                      onClick={() => window.open(report.fileUrl, '_blank')}
+                      className="w-full gap-2"
+                      variant="outline"
+                    >
+                      <Download weight="bold" />
+                      {t.annualReports.downloadReport}
+                    </Button>
+                  )}
+                </div>
               </CardContent>
             </Card>
           ))}
         </div>
       </div>
+
+      {/* Read More Dialog */}
+      <Dialog open={!!selectedReport} onOpenChange={() => setSelectedReport(null)}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-xl">
+              {selectedReport?.title} ({selectedReport?.year})
+            </DialogTitle>
+            <DialogDescription className="sr-only">
+              Full details of the annual report
+            </DialogDescription>
+          </DialogHeader>
+          <div className="mt-4 text-muted-foreground whitespace-pre-line">
+            {selectedReport?.description}
+          </div>
+          {selectedReport?.fileUrl && (
+            <div className="mt-6">
+              <Button
+                onClick={() => window.open(selectedReport.fileUrl, '_blank')}
+                className="w-full gap-2"
+              >
+                <Download weight="bold" />
+                {t.annualReports.downloadReport}
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   )
 }

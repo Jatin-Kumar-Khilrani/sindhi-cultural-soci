@@ -73,6 +73,7 @@ export interface Translations {
     subtitle: string
     downloadReport: string
     year: string
+    readMore: string
   }
 }
 
@@ -149,7 +150,8 @@ export const translations: Record<Language, Translations> = {
       title: 'Annual Reports',
       subtitle: 'View our yearly achievements and activities',
       downloadReport: 'Download Report',
-      year: 'Year'
+      year: 'Year',
+      readMore: 'Read More'
     }
   },
   hi: {
@@ -224,7 +226,8 @@ export const translations: Record<Language, Translations> = {
       title: 'वार्षिक रिपोर्ट',
       subtitle: 'हमारी वार्षिक उपलब्धियां और गतिविधियां देखें',
       downloadReport: 'रिपोर्ट डाउनलोड करें',
-      year: 'वर्ष'
+      year: 'वर्ष',
+      readMore: 'और पढ़ें'
     }
   },
   sd: {
@@ -299,7 +302,8 @@ export const translations: Record<Language, Translations> = {
       title: 'سالياني رپورٽون',
       subtitle: 'اسان جون سالانه ڪاميابيون ۽ سرگرميون ڏسو',
       downloadReport: 'رپورٽ ڊائون لوڊ ڪريو',
-      year: 'سال'
+      year: 'سال',
+      readMore: 'وڌيڪ پڙهو'
     }
   }
 }

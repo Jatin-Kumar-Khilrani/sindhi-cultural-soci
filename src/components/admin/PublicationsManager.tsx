@@ -8,6 +8,7 @@ import { Card } from '@/components/ui/card'
 import { Trash, Plus, ArrowSquareOut } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { NewspaperPublication } from '@/lib/types'
+import ImageUpload from './ImageUpload'
 
 export default function PublicationsManager() {
   const [publications, setPublications] = useKV<NewspaperPublication[]>('publications', [])
@@ -143,12 +144,12 @@ export default function PublicationsManager() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="imageUrl">Image URL *</Label>
-            <Input
-              id="imageUrl"
-              value={formData.imageUrl}
-              onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-              placeholder="https://... or /assets/images/..."
+            <Label>Publication Image</Label>
+            <ImageUpload
+              currentImageUrl={formData.imageUrl}
+              onImageUploaded={(url) => setFormData({ ...formData, imageUrl: url })}
+              onImageRemoved={() => setFormData({ ...formData, imageUrl: '' })}
+              folder="publications"
             />
           </div>
 
