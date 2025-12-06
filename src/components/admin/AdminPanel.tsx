@@ -8,6 +8,7 @@ import VideosManager from './VideosManager'
 import PublicationsManager from './PublicationsManager'
 import AnnualReportsManager from './AnnualReportsManager'
 import SiteSettingsManager from './SiteSettingsManager'
+import OrganizationInfoManager from './OrganizationInfoManager'
 
 interface AdminPanelProps {
   open: boolean
@@ -29,8 +30,9 @@ export default function AdminPanel({ open, onOpenChange, isAuthenticated }: Admi
         </DialogHeader>
 
         <ScrollArea className="h-[calc(90vh-120px)] pr-4">
-          <Tabs defaultValue="leadership" className="mt-4">
-            <TabsList className="grid w-full grid-cols-6">
+          <Tabs defaultValue="organization" className="mt-4">
+            <TabsList className="grid w-full grid-cols-7">
+              <TabsTrigger value="organization">Organization</TabsTrigger>
               <TabsTrigger value="leadership">Leadership</TabsTrigger>
               <TabsTrigger value="events">Events</TabsTrigger>
               <TabsTrigger value="videos">Videos</TabsTrigger>
@@ -38,6 +40,10 @@ export default function AdminPanel({ open, onOpenChange, isAuthenticated }: Admi
               <TabsTrigger value="reports">Reports</TabsTrigger>
               <TabsTrigger value="settings">Settings</TabsTrigger>
             </TabsList>
+
+            <TabsContent value="organization" className="mt-6">
+              <OrganizationInfoManager />
+            </TabsContent>
 
             <TabsContent value="leadership" className="mt-6">
               <LeadershipManager />
