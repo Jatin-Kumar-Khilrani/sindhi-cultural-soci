@@ -144,12 +144,11 @@ export default function PublicationsManager() {
           </div>
 
           <div className="space-y-2">
-            <Label>Publication Image</Label>
             <ImageUpload
-              currentImageUrl={formData.imageUrl}
-              onImageUploaded={(url) => setFormData({ ...formData, imageUrl: url })}
-              onImageRemoved={() => setFormData({ ...formData, imageUrl: '' })}
+              value={formData.imageUrl}
+              onChange={(url) => setFormData({ ...formData, imageUrl: url })}
               folder="publications"
+              label="Publication Image"
             />
           </div>
 

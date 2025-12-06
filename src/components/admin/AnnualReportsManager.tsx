@@ -8,6 +8,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Plus, Trash, PencilSimple } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { AnnualReport } from '@/lib/types'
+import FileUpload from './FileUpload'
 
 export default function AnnualReportsManager() {
   const [reports, setReports] = useKV<AnnualReport[]>('annualReports', [])
@@ -112,12 +113,14 @@ export default function AnnualReportsManager() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="fileUrl">Report File URL</Label>
-              <Input
-                id="fileUrl"
+              <FileUpload
                 value={formData.fileUrl}
-                onChange={(e) => setFormData({ ...formData, fileUrl: e.target.value })}
-                placeholder="https://example.com/report.pdf"
+                onChange={(url) => setFormData({ ...formData, fileUrl: url })}
+                folder="reports"
+                label="Report File (PDF)"
+                accept=".pdf,application/pdf"
+                maxSizeMB={20}
+                fileTypeLabel="PDF"
               />
             </div>
 
