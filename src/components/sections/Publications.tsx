@@ -1,12 +1,48 @@
+import { useState } from 'react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ArrowSquareOut, Newspaper } from '@phosphor-icons/react'
 import { NewspaperPublication } from '@/lib/types'
 import { Language, useTranslation } from '@/lib/i18n'
 
+// Check if URL is likely a valid image URL
+function isImageUrl(url: string): boolean {
+  if (!url) return false
+  const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp']
+  const lowerUrl = url.toLowerCase()
+  // Check for image extensions or blob storage URLs
+  return imageExtensions.some(ext => lowerUrl.includes(ext)) || 
+         lowerUrl.includes('blob.core.windows.net')
+}
+
 interface PublicationsProps {
   publications: NewspaperPublication[]
   language: Language
+}
+
+// Component for publication image with fallback
+function PublicationImage({ url, title }: { url: string; title: string }) {
+  const [hasError, setHasError] = useState(false)
+  
+  if (!url || hasError || !isImageUrl(url)) {
+    // Show placeholder with newspaper icon
+    return (
+      <div className="aspect-[4/3] overflow-hidden bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 flex items-center justify-center">
+        <Newspaper size={64} className="text-primary/40" weight="duotone" />
+      </div>
+    )
+  }
+  
+  return (
+    <div className="aspect-[4/3] overflow-hidden bg-muted">
+      <img
+        src={url}
+        alt={title}
+        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+        onError={() => setHasError(true)}
+      />
+    </div>
+  )
 }
 
 export default function Publications({ publications, language }: PublicationsProps) {
@@ -39,15 +75,7 @@ export default function Publications({ publications, language }: PublicationsPro
                 key={publication.id}
                 className="overflow-hidden hover:shadow-lg transition-shadow duration-300"
               >
-                {publication.imageUrl && (
-                  <div className="aspect-[4/3] overflow-hidden bg-muted">
-                    <img
-                      src={publication.imageUrl}
-                      alt={publication.title}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                )}
+                <PublicationImage url={publication.imageUrl || ''} title={publication.title} />
                 <div className="p-6 space-y-3">
                   <div className="flex items-start justify-between gap-2">
                     <div>
