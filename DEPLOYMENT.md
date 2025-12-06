@@ -73,7 +73,7 @@ This is a multilingual cultural organization website for Sindhi Cultural Society
 - **Styling**: Tailwind CSS v4
 - **UI Components**: shadcn/ui v4
 - **Icons**: Phosphor Icons
-- **Persistence**: Spark KV (Key-Value storage)
+- **Persistence**: Azure Cosmos DB
 - **Animations**: Framer Motion
 - **Notifications**: Sonner (toast)
 
@@ -171,14 +171,20 @@ jobs:
 
 ## Environment Configuration
 
-The application stores all data in browser localStorage via Spark KV. No environment variables or backend servers are required.
+The application stores all data in Azure Cosmos DB. See `AZURE_SETUP.md` for setup instructions.
+
+### Required Environment Variables
+- `VITE_COSMOS_ENDPOINT`: Your Cosmos DB endpoint URL
+- `VITE_COSMOS_KEY`: Your Cosmos DB access key
+- `VITE_COSMOS_DATABASE`: Database name (default: sindhi-cultural-db)
+- `VITE_COSMOS_CONTAINER`: Container name (default: kv-store)
 
 ## Security Considerations
 
 1. **Change Admin Credentials**: The default admin username/password should be changed immediately
 2. **HTTPS**: Always deploy with HTTPS enabled (automatic on Netlify/Vercel)
 3. **Content Security**: Admin panel requires authentication before any modifications
-4. **Data Persistence**: All data is stored client-side using Spark KV
+4. **Data Persistence**: All data is stored in Azure Cosmos DB
 
 ## Browser Support
 

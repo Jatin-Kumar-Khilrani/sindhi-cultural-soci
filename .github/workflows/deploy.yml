@@ -10,6 +10,10 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,9 +21,17 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
       - run: npm ci
-      - run: npm run build
+      - name: Build
+        run: npm run build
+        env:
+          GITHUB_PAGES: 'true'
+          VITE_COSMOS_ENDPOINT: ${{ secrets.VITE_COSMOS_ENDPOINT }}
+          VITE_COSMOS_KEY: ${{ secrets.VITE_COSMOS_KEY }}
+          VITE_COSMOS_DATABASE: ${{ secrets.VITE_COSMOS_DATABASE }}
+          VITE_COSMOS_CONTAINER: ${{ secrets.VITE_COSMOS_CONTAINER }}
+      - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
@@ -33,3 +45,4 @@ jobs:
     steps:
       - uses: actions/deploy-pages@v4
         id: deployment
+

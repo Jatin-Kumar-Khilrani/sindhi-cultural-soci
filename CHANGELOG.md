@@ -65,7 +65,7 @@ All notable changes to the Sindhi Cultural Society website will be documented in
 
 ### Features
 - Dynamic content management without backend
-- Browser-based persistence using Spark KV
+- Cloud-based persistence using Azure Cosmos DB
 - Smooth animations with Framer Motion
 - Toast notifications with Sonner
 - Form validation with React Hook Form

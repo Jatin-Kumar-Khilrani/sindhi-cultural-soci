@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useKV } from '@github/spark/hooks'
+import { useKV } from '@/lib/useKV'
 import { Toaster } from '@/components/ui/sonner'
 import Header from '@/components/sections/Header'
 import Hero from '@/components/sections/Hero'

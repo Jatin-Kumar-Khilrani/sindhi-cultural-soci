@@ -31,4 +31,9 @@ pids
 .file-manifest
 .devcontainer/
 
-.spark-workbench-id
+# Environment files
+.env.local
+.env.*.local
+
+# Local config (fetched from Azure Key Vault)
+public/config.json

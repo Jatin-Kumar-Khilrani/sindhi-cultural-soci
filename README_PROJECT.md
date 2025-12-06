@@ -80,7 +80,7 @@ The production-ready files will be in the `dist/` directory.
 - **UI Components**: shadcn/ui v4
 - **Icons**: Phosphor Icons
 - **Animations**: Framer Motion
-- **Data Persistence**: Spark KV (browser-based key-value storage)
+- **Data Persistence**: Azure Cosmos DB
 - **Forms**: React Hook Form
 - **Notifications**: Sonner
 
