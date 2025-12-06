@@ -119,7 +119,7 @@ export default function Contact({ orgInfo, language, benevityUrl }: ContactProps
                   </div>
                   <div className="flex justify-between items-center border-b border-border/50 pb-2">
                     <span className="text-sm text-muted-foreground">{t.contact.accountNumber}:</span>
-                    <span className="font-mono font-semibold text-sm">0136010002280</span>
+                    <span className="font-mono font-semibold text-sm">01360100002280</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">{t.contact.ifscCode}:</span>
