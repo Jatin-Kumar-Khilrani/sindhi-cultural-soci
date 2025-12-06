@@ -31,14 +31,14 @@ export default function AdminPanel({ open, onOpenChange, isAuthenticated }: Admi
 
         <ScrollArea className="h-[calc(90vh-120px)] pr-4">
           <Tabs defaultValue="organization" className="mt-4">
-            <TabsList className="grid w-full grid-cols-7">
-              <TabsTrigger value="organization">Organization</TabsTrigger>
-              <TabsTrigger value="leadership">Leadership</TabsTrigger>
-              <TabsTrigger value="events">Events</TabsTrigger>
-              <TabsTrigger value="videos">Videos</TabsTrigger>
-              <TabsTrigger value="publications">Publications</TabsTrigger>
-              <TabsTrigger value="reports">Reports</TabsTrigger>
-              <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsList className="flex flex-wrap h-auto gap-1 p-1">
+              <TabsTrigger value="organization" className="text-xs px-3 py-1.5">Organization</TabsTrigger>
+              <TabsTrigger value="leadership" className="text-xs px-3 py-1.5">Leadership</TabsTrigger>
+              <TabsTrigger value="events" className="text-xs px-3 py-1.5">Events</TabsTrigger>
+              <TabsTrigger value="videos" className="text-xs px-3 py-1.5">Videos</TabsTrigger>
+              <TabsTrigger value="publications" className="text-xs px-3 py-1.5">Publications</TabsTrigger>
+              <TabsTrigger value="reports" className="text-xs px-3 py-1.5">Reports</TabsTrigger>
+              <TabsTrigger value="settings" className="text-xs px-3 py-1.5">Settings</TabsTrigger>
             </TabsList>
 
             <TabsContent value="organization" className="mt-6">
