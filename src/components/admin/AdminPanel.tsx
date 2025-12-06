@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import LeadershipManager from './LeadershipManager'
@@ -25,6 +25,7 @@ export default function AdminPanel({ open, onOpenChange, isAuthenticated }: Admi
       <DialogContent className="max-w-6xl max-h-[90vh]">
         <DialogHeader>
           <DialogTitle className="text-2xl">Admin Configuration Panel</DialogTitle>
+          <DialogDescription>Manage your website content, leadership, events, and settings</DialogDescription>
         </DialogHeader>
 
         <ScrollArea className="h-[calc(90vh-120px)] pr-4">

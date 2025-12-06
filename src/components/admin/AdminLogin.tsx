@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useKV } from '@/lib/useKV'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
@@ -40,6 +40,7 @@ export default function AdminLogin({ open, onOpenChange, onAuthenticated }: Admi
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-2xl">Admin Login</DialogTitle>
+          <DialogDescription>Enter your credentials to access the admin panel</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleLogin} className="space-y-4 mt-4">
           <div className="space-y-2">
