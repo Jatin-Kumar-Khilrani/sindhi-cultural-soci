@@ -31,6 +31,10 @@ export interface OrganizationInfo {
   email: string
   pan: string
   youtubeChannel: string
+  bankName?: string
+  accountHolder?: string
+  accountNumber?: string
+  ifscCode?: string
 }
 
 export interface YouTubeVideo {

@@ -115,16 +115,22 @@ export default function Contact({ orgInfo, language, benevityUrl }: ContactProps
                 <div className="space-y-3 text-left max-w-md mx-auto">
                   <div className="flex justify-between items-center border-b border-border/50 pb-2">
                     <span className="text-sm text-muted-foreground">{t.contact.accountHolder}:</span>
-                    <span className="font-semibold text-sm">Sindhi Cultural Society Jodhpur</span>
+                    <span className="font-semibold text-sm">{orgInfo.accountHolder || 'Sindhi Cultural Society Jodhpur'}</span>
                   </div>
                   <div className="flex justify-between items-center border-b border-border/50 pb-2">
                     <span className="text-sm text-muted-foreground">{t.contact.accountNumber}:</span>
-                    <span className="font-mono font-semibold text-sm">01360100002280</span>
+                    <span className="font-mono font-semibold text-sm">{orgInfo.accountNumber || '01360100002280'}</span>
                   </div>
-                  <div className="flex justify-between items-center">
+                  <div className="flex justify-between items-center border-b border-border/50 pb-2">
                     <span className="text-sm text-muted-foreground">{t.contact.ifscCode}:</span>
-                    <span className="font-mono font-semibold text-sm">BARB0JODHPU</span>
+                    <span className="font-mono font-semibold text-sm">{orgInfo.ifscCode || 'BARB0JODHPU'}</span>
                   </div>
+                  {orgInfo.bankName && (
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">Bank:</span>
+                      <span className="font-semibold text-sm">{orgInfo.bankName}</span>
+                    </div>
+                  )}
                 </div>
               </div>
               

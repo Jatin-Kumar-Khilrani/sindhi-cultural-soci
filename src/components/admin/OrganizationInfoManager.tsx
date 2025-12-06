@@ -20,7 +20,11 @@ const defaultOrgInfo: OrganizationInfo = {
   phone: '',
   email: '',
   pan: '',
-  youtubeChannel: ''
+  youtubeChannel: '',
+  bankName: '',
+  accountHolder: '',
+  accountNumber: '',
+  ifscCode: ''
 }
 
 export default function OrganizationInfoManager() {
@@ -213,6 +217,54 @@ export default function OrganizationInfoManager() {
                 value={formData.youtubeChannel}
                 onChange={(e) => setFormData({ ...formData, youtubeChannel: e.target.value })}
                 placeholder="https://youtube.com/@channel"
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Bank Account Details</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="bankName">Bank Name</Label>
+              <Input
+                id="bankName"
+                value={formData.bankName || ''}
+                onChange={(e) => setFormData({ ...formData, bankName: e.target.value })}
+                placeholder="e.g., ICICI Bank"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="accountHolder">Account Holder Name</Label>
+              <Input
+                id="accountHolder"
+                value={formData.accountHolder || ''}
+                onChange={(e) => setFormData({ ...formData, accountHolder: e.target.value })}
+                placeholder="Sindhi Cultural Society"
+              />
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="accountNumber">Account Number</Label>
+              <Input
+                id="accountNumber"
+                value={formData.accountNumber || ''}
+                onChange={(e) => setFormData({ ...formData, accountNumber: e.target.value })}
+                placeholder="0136010002280"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="ifscCode">IFSC Code</Label>
+              <Input
+                id="ifscCode"
+                value={formData.ifscCode || ''}
+                onChange={(e) => setFormData({ ...formData, ifscCode: e.target.value })}
+                placeholder="ICIC0000136"
               />
             </div>
           </div>
