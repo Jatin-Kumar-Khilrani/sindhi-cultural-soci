@@ -74,14 +74,6 @@ export default function LeadershipManager() {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-accent/50 border-accent">
-        <CardContent className="p-4">
-          <p className="text-sm">
-            <strong>Note:</strong> "President" and "Adhyaksh" are the same position. Use "President" for English, and the translations will automatically show "Adhyaksh" in Hindi/Sindhi.
-          </p>
-        </CardContent>
-      </Card>
-
       <Card>
         <CardContent className="p-6">
           <h3 className="text-lg font-semibold mb-4">
