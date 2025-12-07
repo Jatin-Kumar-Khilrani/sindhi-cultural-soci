@@ -24,7 +24,7 @@ export default function FileUpload({
   label = 'File',
   placeholder = 'https://... (file URL)',
   accept = '.pdf,application/pdf',
-  maxSizeMB = 10,
+  maxSizeMB = 25,
   fileTypeLabel = 'PDF'
 }: FileUploadProps) {
   const [isUploading, setIsUploading] = useState(false)
