@@ -10,6 +10,7 @@ import { Plus, Trash, PencilSimple } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { Event } from '@/lib/types'
 import { format } from 'date-fns'
+import ImageUpload from './ImageUpload'
 
 export default function EventsManager() {
   const [events, setEvents] = useKV<Event[]>('events', [])
@@ -161,13 +162,15 @@ export default function EventsManager() {
                 </Select>
               </div>
               <div className="md:col-span-2">
-                <Label htmlFor="imageUrl">Image URL</Label>
-                <Input
-                  id="imageUrl"
+                <ImageUpload
                   value={formData.imageUrl}
-                  onChange={(e) => setFormData(prev => ({ ...prev, imageUrl: e.target.value }))}
-                  placeholder="https://..."
+                  onChange={(url) => setFormData(prev => ({ ...prev, imageUrl: url }))}
+                  folder="events"
+                  label="Event Image"
                 />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Upload an image or paste a URL. If no image is uploaded, a placeholder will be used.
+                </p>
               </div>
             </div>
             <div className="flex gap-2">

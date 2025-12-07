@@ -2,10 +2,47 @@ import { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Calendar, MapPin, Ticket } from '@phosphor-icons/react'
+import { Calendar, MapPin, Ticket, Image as ImageIcon } from '@phosphor-icons/react'
 import { Event } from '@/lib/types'
 import { format } from 'date-fns'
 import { Language, useTranslation } from '@/lib/i18n'
+
+// Component to handle event images with fallback
+function EventImage({ src, alt }: { src: string; alt: string }) {
+  const [hasError, setHasError] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Check if URL is valid
+  const isValidUrl = src && (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('data:'))
+
+  if (!isValidUrl || hasError) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-muted">
+        <div className="text-center p-4">
+          <ImageIcon size={48} className="text-muted-foreground mx-auto mb-2" weight="thin" />
+          <p className="text-xs text-muted-foreground">No Image</p>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <>
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-muted animate-pulse">
+          <ImageIcon size={32} className="text-muted-foreground" weight="thin" />
+        </div>
+      )}
+      <img
+        src={src}
+        alt={alt}
+        className={`w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+        onError={() => setHasError(true)}
+        onLoad={() => setIsLoading(false)}
+      />
+    </>
+  )
+}
 
 interface EventsProps {
   events: Event[]
@@ -74,15 +111,9 @@ export default function Events({ events, language }: EventsProps) {
                     key={event.id}
                     className="group hover:shadow-lg hover:scale-[1.02] transition-all duration-300 border-2 hover:border-primary/50 overflow-hidden"
                   >
-                    {event.imageUrl && (
-                      <div className="aspect-video overflow-hidden bg-muted">
-                        <img
-                          src={event.imageUrl}
-                          alt={event.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                    )}
+                    <div className="aspect-video overflow-hidden bg-muted relative">
+                      <EventImage src={event.imageUrl || ''} alt={event.title} />
+                    </div>
                     <CardContent className="p-6">
                       <div className="flex items-start justify-between gap-2 mb-3">
                         <Badge className={getTypeColor(event.type)} variant="outline">
