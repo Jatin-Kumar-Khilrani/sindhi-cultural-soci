@@ -5,12 +5,49 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Plus, Trash, PencilSimple } from '@phosphor-icons/react'
+import { Plus, Trash, PencilSimple, Calendar, MapPin, Image as ImageIcon } from '@phosphor-icons/react'
 import { toast } from 'sonner'
 import { Event } from '@/lib/types'
 import { format } from 'date-fns'
 import ImageUpload from './ImageUpload'
+
+// Preview image component with fallback
+function PreviewImage({ src, alt }: { src: string; alt: string }) {
+  const [hasError, setHasError] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  
+  const isValidUrl = src && (src.startsWith('http://') || src.startsWith('https://') || src.startsWith('data:'))
+  
+  if (!isValidUrl || hasError) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-muted">
+        <div className="text-center p-4">
+          <ImageIcon size={32} className="text-muted-foreground mx-auto mb-1" weight="thin" />
+          <p className="text-xs text-muted-foreground">No Image</p>
+        </div>
+      </div>
+    )
+  }
+  
+  return (
+    <>
+      {isLoading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-muted animate-pulse">
+          <ImageIcon size={24} className="text-muted-foreground" weight="thin" />
+        </div>
+      )}
+      <img
+        src={src}
+        alt={alt}
+        className={`w-full h-full object-cover ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+        onError={() => setHasError(true)}
+        onLoad={() => setIsLoading(false)}
+      />
+    </>
+  )
+}
 
 export default function EventsManager() {
   const [events, setEvents] = useKV<Event[]>('events', [])
@@ -22,7 +59,8 @@ export default function EventsManager() {
     type: 'cultural-program' as Event['type'],
     venue: '',
     status: 'upcoming' as Event['status'],
-    imageUrl: ''
+    imageUrl: '',
+    images: [] as string[]
   })
 
   const resetForm = () => {
@@ -33,7 +71,8 @@ export default function EventsManager() {
       type: 'cultural-program',
       venue: '',
       status: 'upcoming',
-      imageUrl: ''
+      imageUrl: '',
+      images: []
     })
     setEditingId(null)
   }
@@ -75,9 +114,23 @@ export default function EventsManager() {
       type: event.type,
       venue: event.venue || '',
       status: event.status,
-      imageUrl: event.imageUrl || ''
+      imageUrl: event.imageUrl || '',
+      images: event.images || []
     })
     setEditingId(event.id)
+  }
+
+  const addImage = (url: string) => {
+    if (url && !formData.images.includes(url)) {
+      setFormData(prev => ({ ...prev, images: [...prev.images, url] }))
+    }
+  }
+
+  const removeImage = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index)
+    }))
   }
 
   const handleDelete = (id: string) => {
@@ -166,10 +219,49 @@ export default function EventsManager() {
                   value={formData.imageUrl}
                   onChange={(url) => setFormData(prev => ({ ...prev, imageUrl: url }))}
                   folder="events"
-                  label="Event Image"
+                  label="Main Event Image (Cover)"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
-                  Upload an image or paste a URL. If no image is uploaded, a placeholder will be used.
+                  This is the primary image shown in event cards.
+                </p>
+              </div>
+              
+              {/* Multiple Images Section */}
+              <div className="md:col-span-2 border-t pt-4">
+                <Label className="mb-2 block">Additional Images (Gallery)</Label>
+                <p className="text-xs text-muted-foreground mb-3">
+                  Add multiple images for this event. These will be shown in the event details dialog.
+                </p>
+                
+                {/* Display existing images */}
+                {formData.images.length > 0 && (
+                  <div className="grid grid-cols-4 md:grid-cols-6 gap-2 mb-3">
+                    {formData.images.map((img, index) => (
+                      <div key={index} className="relative group aspect-square rounded overflow-hidden bg-muted">
+                        <img src={img} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => removeImage(index)}
+                          className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full w-5 h-5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity text-xs"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
+                {/* Add new image */}
+                <ImageUpload
+                  value=""
+                  onChange={(url) => {
+                    if (url) addImage(url)
+                  }}
+                  folder="events/gallery"
+                  label="Add Gallery Image"
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  {formData.images.length} image(s) in gallery
                 </p>
               </div>
             </div>
@@ -184,6 +276,52 @@ export default function EventsManager() {
                 </Button>
               )}
             </div>
+
+            {/* Live Preview */}
+            {formData.title && (
+              <div className="mt-6 pt-6 border-t">
+                <h4 className="text-sm font-semibold mb-3 text-muted-foreground">Preview</h4>
+                <Card className="max-w-sm overflow-hidden border-2">
+                  <div className="aspect-video overflow-hidden bg-muted relative">
+                    <PreviewImage src={formData.imageUrl || ''} alt={formData.title} />
+                    {formData.images.length > 0 && (
+                      <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                        +{formData.images.length} photos
+                      </div>
+                    )}
+                  </div>
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <Badge variant="outline" className="text-xs">
+                        {formData.type === 'play' ? 'Theatre Play' :
+                         formData.type === 'workshop' ? 'Workshop' :
+                         formData.type === 'camp' ? 'Training Camp' :
+                         formData.type === 'cultural-program' ? 'Cultural Program' : 'Event'}
+                      </Badge>
+                      <Badge variant={formData.status === 'upcoming' ? 'default' : 'secondary'} className="text-xs">
+                        {formData.status}
+                      </Badge>
+                    </div>
+                    <h3 className="font-semibold mb-2 line-clamp-2">{formData.title}</h3>
+                    <div className="space-y-1 mb-2 text-xs text-muted-foreground">
+                      {formData.date && (
+                        <div className="flex items-center gap-1">
+                          <Calendar size={12} weight="bold" />
+                          <span>{format(new Date(formData.date), 'PPP')}</span>
+                        </div>
+                      )}
+                      {formData.venue && (
+                        <div className="flex items-center gap-1">
+                          <MapPin size={12} weight="bold" />
+                          <span className="line-clamp-1">{formData.venue}</span>
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-xs leading-relaxed line-clamp-3">{formData.description}</p>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
           </form>
         </CardContent>
       </Card>
@@ -195,15 +333,29 @@ export default function EventsManager() {
             {[...(events || [])].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map(event => (
               <Card key={event.id}>
                 <CardContent className="p-4">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <p className="font-semibold">{event.title}</p>
-                        <span className={`text-xs px-2 py-1 rounded ${event.status === 'upcoming' ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+                  <div className="flex items-start gap-4">
+                    {/* Thumbnail */}
+                    <div className="w-24 h-16 rounded overflow-hidden bg-muted flex-shrink-0 relative">
+                      <PreviewImage src={event.imageUrl || ''} alt={event.title} />
+                      {event.images && event.images.length > 0 && (
+                        <div className="absolute bottom-0 right-0 bg-black/70 text-white text-[10px] px-1 py-0.5 rounded-tl">
+                          +{event.images.length}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <p className="font-semibold truncate">{event.title}</p>
+                        <span className={`text-xs px-2 py-0.5 rounded flex-shrink-0 ${event.status === 'upcoming' ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
                           {event.status}
                         </span>
+                        {event.images && event.images.length > 0 && (
+                          <span className="text-xs text-muted-foreground flex-shrink-0">
+                            📷 {event.images.length} gallery
+                          </span>
+                        )}
                       </div>
-                      <p className="text-sm text-muted-foreground mb-1">{event.description}</p>
+                      <p className="text-sm text-muted-foreground mb-1 line-clamp-1">{event.description}</p>
                       <p className="text-xs text-muted-foreground">
                         {format(new Date(event.date), 'PPP')} {event.venue && `• ${event.venue}`}
                       </p>

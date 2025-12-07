@@ -17,6 +17,7 @@ export interface Event {
   venue?: string
   status: 'upcoming' | 'past'
   imageUrl?: string
+  images?: string[]  // Support for multiple images
 }
 
 export interface OrganizationInfo {

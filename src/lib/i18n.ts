@@ -33,6 +33,7 @@ export interface Translations {
     all: string
     venue: string
     date: string
+    readMore: string
   }
   publications: {
     title: string
@@ -110,7 +111,8 @@ export const translations: Record<Language, Translations> = {
       past: 'Past',
       all: 'All',
       venue: 'Venue',
-      date: 'Date'
+      date: 'Date',
+      readMore: 'Read More'
     },
     publications: {
       title: 'Press & Publications',
@@ -186,7 +188,8 @@ export const translations: Record<Language, Translations> = {
       past: 'पिछले',
       all: 'सभी',
       venue: 'स्थान',
-      date: 'तिथि'
+      date: 'तिथि',
+      readMore: 'और पढ़ें'
     },
     publications: {
       title: 'प्रेस और प्रकाशन',
@@ -262,7 +265,8 @@ export const translations: Record<Language, Translations> = {
       past: 'گذريل',
       all: 'سڀ',
       venue: 'جڳھ',
-      date: 'تاريخ'
+      date: 'تاريخ',
+      readMore: 'وڌيڪ پڙھو'
     },
     publications: {
       title: 'پريس ۽ اشاعتون',

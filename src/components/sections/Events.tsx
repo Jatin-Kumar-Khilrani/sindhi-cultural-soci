@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { Calendar, MapPin, Ticket, Image as ImageIcon } from '@phosphor-icons/react'
 import { Event } from '@/lib/types'
 import { format } from 'date-fns'
@@ -51,6 +53,7 @@ interface EventsProps {
 
 export default function Events({ events, language }: EventsProps) {
   const [filter, setFilter] = useState<'all' | 'upcoming' | 'past'>('all')
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
   const t = useTranslation(language)
 
   const upcomingEvents = events.filter(e => e.status === 'upcoming').sort((a, b) => 
@@ -109,10 +112,16 @@ export default function Events({ events, language }: EventsProps) {
                 {filteredEvents.map(event => (
                   <Card
                     key={event.id}
-                    className="group hover:shadow-lg hover:scale-[1.02] transition-all duration-300 border-2 hover:border-primary/50 overflow-hidden"
+                    className="group hover:shadow-lg hover:scale-[1.02] transition-all duration-300 border-2 hover:border-primary/50 overflow-hidden cursor-pointer"
+                    onClick={() => setSelectedEvent(event)}
                   >
                     <div className="aspect-video overflow-hidden bg-muted relative">
                       <EventImage src={event.imageUrl || ''} alt={event.title} />
+                      {event.images && event.images.length > 0 && (
+                        <div className="absolute bottom-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
+                          📷 +{event.images.length}
+                        </div>
+                      )}
                     </div>
                     <CardContent className="p-6">
                       <div className="flex items-start justify-between gap-2 mb-3">
@@ -140,6 +149,15 @@ export default function Events({ events, language }: EventsProps) {
                       </div>
 
                       <p className="text-sm leading-relaxed line-clamp-3">{event.description}</p>
+                      {event.description.length > 150 && (
+                        <Button
+                          variant="link"
+                          className="p-0 h-auto text-primary font-medium"
+                          onClick={() => setSelectedEvent(event)}
+                        >
+                          {t.events.readMore} →
+                        </Button>
+                      )}
                     </CardContent>
                   </Card>
                 ))}
@@ -161,6 +179,71 @@ export default function Events({ events, language }: EventsProps) {
             )}
           </TabsContent>
         </Tabs>
+
+        {/* Read More Dialog */}
+        <Dialog open={!!selectedEvent} onOpenChange={() => setSelectedEvent(null)}>
+          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+            {selectedEvent && (
+              <>
+                <DialogHeader>
+                  <DialogTitle className="text-xl">{selectedEvent.title}</DialogTitle>
+                  <DialogDescription asChild>
+                    <div className="flex flex-wrap items-center gap-2 pt-2">
+                      <Badge className={getTypeColor(selectedEvent.type)} variant="outline">
+                        {getTypeLabel(selectedEvent.type)}
+                      </Badge>
+                      <Badge variant={selectedEvent.status === 'upcoming' ? 'default' : 'secondary'}>
+                        {selectedEvent.status === 'upcoming' ? t.events.upcoming : t.events.past}
+                      </Badge>
+                    </div>
+                  </DialogDescription>
+                </DialogHeader>
+                
+                {/* Main Image */}
+                {selectedEvent.imageUrl && (
+                  <div className="aspect-video overflow-hidden rounded-lg bg-muted relative">
+                    <EventImage src={selectedEvent.imageUrl} alt={selectedEvent.title} />
+                  </div>
+                )}
+                
+                {/* Image Gallery */}
+                {selectedEvent.images && selectedEvent.images.length > 0 && (
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-muted-foreground">Gallery ({selectedEvent.images.length} photos)</p>
+                    <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
+                      {selectedEvent.images.map((img, index) => (
+                        <div key={index} className="aspect-square overflow-hidden rounded-lg bg-muted relative cursor-pointer hover:opacity-90 transition-opacity">
+                          <img 
+                            src={img} 
+                            alt={`${selectedEvent.title} - Photo ${index + 1}`}
+                            className="w-full h-full object-cover"
+                            onClick={() => window.open(img, '_blank')}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                <div className="space-y-3">
+                  <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2">
+                      <Calendar size={16} weight="bold" />
+                      <span>{format(new Date(selectedEvent.date), 'PPP')}</span>
+                    </div>
+                    {selectedEvent.venue && (
+                      <div className="flex items-center gap-2">
+                        <MapPin size={16} weight="bold" />
+                        <span>{selectedEvent.venue}</span>
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-sm leading-relaxed whitespace-pre-wrap">{selectedEvent.description}</p>
+                </div>
+              </>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </section>
   )
